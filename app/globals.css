@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+/* Munven is a light UI (gray background, white surfaces, blue accents). Defining only light colours
+   keeps text readable for people whose OS is in dark mode. */
+:root {
+  --background: #f9fafb; /* gray-50 */
+  --foreground: #1f2937; /* gray-800 */
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #dbeafe; /* blue-100 */
+  color: #1e3a8a; /* blue-900 */
+}
+
+/* Thin, quiet scrollbars for lists and chat panes */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Keyboard focus is always visible */
+:focus-visible {
+  outline: 2px solid #3b82f6; /* blue-500 */
+  outline-offset: 2px;
+}
+
+/* Touch screens (phones, tablets) */
+@media (pointer: coarse) {
+  /* iOS zooms the page in when a field under 16px gets focus */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+  /* Small text buttons get a finger-sized hit area without changing the layout */
+  .tap {
+    position: relative;
+  }
+  .tap::after {
+    content: "";
+    position: absolute;
+    inset: -8px -4px;
+  }
+}
+
+@keyframes munven-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes munven-pop {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes munven-dot {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-2px); }
+}
+
+.animate-fade-in { animation: munven-fade-in 180ms ease-out both; }
+.animate-pop { animation: munven-pop 150ms ease-out both; }
+.typing-dot { animation: munven-dot 1.2s infinite ease-in-out; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in, .animate-pop, .typing-dot { animation: none; }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Dark theme (Settings → Appearance). Instead of dark: classes on every element, the colour
+   variables Tailwind's utilities read are remapped: grays invert, tints become translucent and
+   accent shades used as text get lighter. Unlayered rules here beat Tailwind's layered theme.
+   --------------------------------------------------------------------------------------------- */
+html.dark {
+  color-scheme: dark;
+  --background: #0d1219;
+  --foreground: #e3e8ef;
+  --surface: #151c26;
+
+  --color-gray-50: #111821;
+  --color-gray-100: #1b2330;
+  --color-gray-200: #283241;
+  --color-gray-300: #384354;
+  --color-gray-400: #6a7687;
+  --color-gray-500: #8d98a8;
+  --color-gray-600: #a9b2bf;
+  --color-gray-700: #c4cbd5;
+  --color-gray-800: #dce1e8;
+  --color-gray-900: #eef1f5;
+
+  --color-blue-50: rgb(59 130 246 / 0.13);
+  --color-blue-100: rgb(59 130 246 / 0.22);
+  --color-blue-200: rgb(59 130 246 / 0.35);
+  --color-blue-300: rgb(96 165 250 / 0.55);
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #60a5fa;
+  --color-blue-600: #3b82f6;
+  --color-blue-700: #93c5fd;
+  --color-blue-800: #bfdbfe;
+  --color-blue-900: #dbeafe;
+
+  --color-red-50: rgb(239 68 68 / 0.12);
+  --color-red-100: rgb(239 68 68 / 0.2);
+  --color-red-200: rgb(239 68 68 / 0.35);
+  --color-red-600: #ef4444;
+  --color-red-700: #fca5a5;
+
+  --color-green-50: rgb(34 197 94 / 0.12);
+  --color-green-100: rgb(34 197 94 / 0.2);
+  --color-green-500: #22c55e;
+  --color-green-600: #4ade80;
+  --color-green-700: #86efac;
+
+  --color-amber-50: rgb(245 158 11 / 0.12);
+  --color-amber-100: rgb(245 158 11 / 0.2);
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+
+  --color-purple-50: rgb(168 85 247 / 0.14);
+  --color-purple-100: rgb(168 85 247 / 0.22);
+  --color-purple-600: #a855f7;
+  --color-purple-700: #d8b4fe;
+
+  --color-pink-50: rgb(236 72 153 / 0.14);
+  --color-pink-100: rgb(236 72 153 / 0.22);
+  --color-pink-600: #f472b6;
+  --color-pink-700: #f9a8d4;
+
+  --color-orange-50: rgb(249 115 22 / 0.14);
+  --color-orange-600: #fb923c;
+  --color-teal-100: rgb(20 184 166 / 0.22);
+  --color-teal-700: #5eead4;
+}
+
+/* White is both a surface (cards) and a text colour (on blue buttons): only the surfaces change */
+html.dark .bg-white,
+html.dark .hover\:bg-white:hover,
+html.dark .focus\:bg-white:focus {
+  background-color: var(--surface);
+}
+html.dark .bg-white\/80 { background-color: rgb(21 28 38 / 0.8); }
+html.dark .bg-white\/95 { background-color: rgb(21 28 38 / 0.95); }
+
+/* Shades used both as a button background and as text: keep buttons dark-on-hover */
+html.dark .hover\:bg-blue-700:hover { background-color: #2563eb; }
+html.dark .hover\:bg-red-700:hover { background-color: #dc2626; }
+html.dark .bg-gray-700 { background-color: #4b5563; } /* "Requirement" timeline badge */
+
+/* Dialog backdrops stay dark */
+html.dark .bg-gray-900\/40,
+html.dark .bg-gray-900\/30 {
+  background-color: rgb(0 0 0 / 0.55);
+}
+
+html.dark ::selection {
+  background: rgb(59 130 246 / 0.4);
+  color: #fff;
+}
+html.dark * { scrollbar-color: #384354 transparent; }
+html.dark *::-webkit-scrollbar-thumb { background: #384354; }
